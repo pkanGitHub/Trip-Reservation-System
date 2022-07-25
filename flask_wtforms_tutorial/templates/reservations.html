@@ -13,7 +13,7 @@
     {{ fname }} {{ lname }} chose Row: {{ row }} Seat: {{ seat }}.
   </p>
   {% endif %}
-  <form method="POST" action="/admin">
+  <form method="POST" action="/reservations">
       {{ form.csrf_token }}
       <div class="form-field">{{ form.first_name.label }} {{ form.first_name }}
         {% if form.first_name.errors %}
