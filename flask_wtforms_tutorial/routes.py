@@ -27,6 +27,15 @@ def user_options():
 def admin():
 
     form = AdminLoginForm()
+     
+    # if request.method == "POST":
+    #     username = request.form["username"]
+    #     password = request.form["password"]
+
+    with open('../passcodes.txt', "r") as file:
+        for line in file.readlines():
+            user, pwd = line.strip().split(', ')
+            print(f"username:{user}, password: {pwd}") 
 
     return render_template("admin.html", form=form, template="form-template")
 
