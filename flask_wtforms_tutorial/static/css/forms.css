@@ -142,3 +142,14 @@ i {
 .g-recaptcha div {
   margin: auto;
 }
+
+.header-container {
+  position: absolute;
+  display: flex;
+  right: 15vw;
+  padding-top: 30px;
+}
+
+.header-container span {
+  padding: 0px 10px;
+}
