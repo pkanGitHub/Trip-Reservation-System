@@ -45,7 +45,7 @@ def reservations():
         seat_choice = int(request.form["seat"])
         submitting_data = True
 
-        return render_template("reservation.html", form=form, template="form-template", fname=first_name, lname=last_name, row=row_choice, seat=seat_choice, submitting_data=submitting_data)
+        return render_template("reservations.html", form=form, template="form-template", fname=first_name, lname=last_name, row=row_choice, seat=seat_choice, submitting_data=submitting_data)
 
     return render_template("reservations.html", form=form, template="form-template")
 
