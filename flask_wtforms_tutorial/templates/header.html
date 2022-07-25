@@ -1,0 +1,9 @@
+{% block content %}
+<div class="header-container">
+    <a href="{{url_for('user_options')}}">Home</a>
+    <span class="header-divider">|</span>
+    <a href="{{url_for('admin')}}">Admin</a>
+    <span class="header-divider">|</span>
+    <a href="{{url_for('reservations')}}">Reservations</a>
+</div>
+{% endblock %}
