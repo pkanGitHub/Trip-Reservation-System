@@ -7,8 +7,13 @@
 {% block content %}
 <div class="formwrapper">
   <h2 class="title">Reserve Your Seat</h2>
-  
-  <form method="POST" action="/admin">
+  {% if submitting_data %}
+  <h4>Thank you for submitting form data</h4>
+  <p>
+    {{ fname }} {{ lname }} chose Row: {{ row }} Seat: {{ seat }}.
+  </p>
+  {% endif %}
+  <form method="POST" action="/reservations">
       {{ form.csrf_token }}
       <div class="form-field">{{ form.first_name.label }} {{ form.first_name }}
         {% if form.first_name.errors %}
