@@ -27,18 +27,34 @@ def user_options():
 @app.route("/admin", methods=['GET', 'POST'])
 def admin():
 
+    error = None
+
     form = AdminLoginForm()
 
-    # if request.method == "POST":
-    #     username = request.form["username"]
-    #     password = request.form["password"]
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
 
-    with open('../passcodes.txt', "r") as file:
-        for line in file.readlines():
-            user, pwd = line.strip().split(', ')
-            print(f"username:{user}, password: {pwd}") 
+        with open("passcodes.txt") as file:
+            lines = file.readlines()
+            admins = []
+            pwds = []
 
-    return render_template("admin.html", form=form, template="form-template")
+        for line in lines:
+            list = line.split(", ")
+            admins.append(list[0])
+            pwds.append(list[1].replace("\n", ""))
+
+        if username == admins[0] and password == pwds[0]:
+            return redirect(url_for('reservations')) # change to admin later
+        elif username == admins[1] and password == pwds[1]:
+            return redirect(url_for('reservations')) # change to admin later
+        elif username == admins[2] and password == pwds[2]:
+            return redirect(url_for('reservations')) # change to admin later
+        else:
+            error = "Wrong username or password, try again"
+            
+    return render_template("admin.html", form=form, template="form-template", error=error)
 
 @app.route("/reservations", methods=['GET', 'POST'])
 def reservations():
