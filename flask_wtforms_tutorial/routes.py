@@ -28,6 +28,7 @@ def user_options():
 def admin():
 
     error = None
+    admin_logged_in = False
 
     Row_list2  = [
             ["O", "O", "O", "O"], 
@@ -58,7 +59,7 @@ def admin():
 
     form = AdminLoginForm()
 
-    if request.method == "POST":
+    if request.method == "POST" and form.validate_on_submit():
         username = request.form["username"]
         password = request.form["password"]
 
@@ -73,15 +74,19 @@ def admin():
             pwds.append(list[1].replace("\n", ""))
 
         if username == admins[0] and password == pwds[0]:
-            return redirect(url_for('reservations')) # change to admin later
+            admin_logged_in = True
         elif username == admins[1] and password == pwds[1]:
-            return redirect(url_for('reservations')) # change to admin later
+            admin_logged_in = True
         elif username == admins[2] and password == pwds[2]:
-            return redirect(url_for('reservations')) # change to admin later
+            admin_logged_in = True
         else:
             error = "Wrong username or password, try again"
+
+        if request.method == "GET" and admin_logged_in:
+            return redirect(url_for('admin'))
+
             
-    return render_template("admin.html", form=form, template="form-template", error=error, Row_list2=Row_list2)
+    return render_template("admin.html", form=form, template="form-template", error=error, Row_list2=Row_list2, admin_logged_in=admin_logged_in)
 
 @app.route("/reservations", methods=['GET', 'POST'])
 def reservations():
