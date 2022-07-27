@@ -5,7 +5,6 @@ from .forms import *
 import numpy
 import random
 
-#@app.route("/", methods=['GET', 'POST'])
 @app.route("/", methods=['GET', 'POST'])
 def user_options():
     
@@ -118,10 +117,7 @@ def reservations():
 
     for z in row_seat_list:
             Row_list1[int(z[0])][int(z[1])] = "X"
-        
-    
-
-        
+ 
     form = ReservationForm()
     # getting data from the form once submit
     if request.method == "POST" and form.validate_on_submit():
@@ -133,7 +129,7 @@ def reservations():
 
         #check if the seat is already reserved
         if Row_list1[row_choice-1][seat_choice-1] == "X":
-            error = "Seat already reserved"
+            error = f"Error: Row: {row_choice} Seat: {seat_choice} already reserved"
             submitting_data = False
             return render_template("reservations.html", form=form, template="form-template", error=error,
             submitting_data=submitting_data, Row_list1=Row_list1, row_choice=row_choice, seat_choice=seat_choice, 
@@ -150,13 +146,10 @@ def reservations():
             with open("reservations.txt", "a") as file:
                 file.write(f"\n{first_name}, {row_choice-1}, {seat_choice-1}, {TicketNumber}")
             Row_list1[row_choice-1][seat_choice-1] = "X"
+            
             return render_template("reservations.html", form=form, template="form-template", Row_list1=Row_list1,
             submitting_data=submitting_data, row=row_choice, seat=seat_choice, 
-            fname=first_name, lname=last_name)
-    #return render_template("reservations.html", form=form, template="form-template", Row_list1=Row_list1)
-
-        return render_template("reservations.html", form=form, template="form-template", fname=first_name, lname=last_name, row=row_choice, seat=seat_choice, 
-        submitting_data=submitting_data, Row_list1=Row_list1)
+            fname=first_name, lname=last_name, TicketNumber=TicketNumber)
 
     return render_template("reservations.html", form=form, template="form-template",Row_list1=Row_list1)
 

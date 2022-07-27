@@ -7,7 +7,17 @@
 {% block content %}
 <div class="formwrapper">
   <h2 class="title">Reserve Your Seat</h2>
+    {% if error %}
+      <p style="color: red;">{{error}}</p>
+    {% endif%}
+    {% if submitting_data %}
+      <p>Congratulation {{ fname }}! Row:{{ row }} and Seat:{{ seat }} is now reserved. Have a nice trip!</p>
+      <p>Your e-ticket number is: {{TicketNumber}}</p>
+      <br/>
+    {% endif %}
   <div>
+    <strong>Seating Chart</strong>
+    <p>X = Reserved Seat ; O = Available Seat</p>
     <ul>
       {% for seat in Row_list1 %}
         <ul>{{"[ " + seat[0] + "  ||  " + seat[1] + "  ||  " + seat[2]+ "  ||  " + seat[3] + " ]"}}</ul>
@@ -15,18 +25,8 @@
     </ul>
   </div>
   
-  {% if submitting_data %}
-    <h4>Thank you for submitting form data</h4>
-    <p>
-      {{ fname }} {{ lname }} chose Row: {{ row }} Seat: {{ seat }}. 
-    </p>
-  {% endif %}
-  
   <form method="POST" action="/reservations">
       {{ form.csrf_token }}
-      {% if error %}
-        <p>{{error}}</p>
-      {% endif%}
       <div class="form-field">{{ form.first_name.label }} {{ form.first_name }}
         {% if form.first_name.errors %}
           <ul class="errors">
