@@ -66,7 +66,3 @@ class AdminLoginForm(FlaskForm):
     login = SubmitField("Login")
 
 
-
-
-
-

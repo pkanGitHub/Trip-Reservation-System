@@ -18,12 +18,15 @@
   {% if submitting_data %}
     <h4>Thank you for submitting form data</h4>
     <p>
-      {{ fname }} {{ lname }} chose Row: {{ row }} Seat: {{ seat }}.
+      {{ fname }} {{ lname }} chose Row: {{ row }} Seat: {{ seat }}. 
     </p>
   {% endif %}
   
   <form method="POST" action="/reservations">
       {{ form.csrf_token }}
+      {% if error %}
+        <p>{{error}}</p>
+      {% endif%}
       <div class="form-field">{{ form.first_name.label }} {{ form.first_name }}
         {% if form.first_name.errors %}
           <ul class="errors">
