@@ -25,7 +25,7 @@
   <form method="POST" action="/admin">
       {{ form.csrf_token }}
       {% if error %}
-        <p>{{error}}</p>
+        <p style="color: red;">{{error}}</p>
       {% endif%}
       <div class="form-field">{{ form.username.label }} {{ form.username }}
         {% if form.username.errors %}
