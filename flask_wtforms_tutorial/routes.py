@@ -5,7 +5,6 @@ from .forms import *
 import numpy
 import random
 
-#@app.route("/", methods=['GET', 'POST'])
 @app.route("/", methods=['GET', 'POST'])
 def user_options():
     
@@ -28,6 +27,7 @@ def user_options():
 def admin():
 
     error = None
+    admin_logged_in = False
 
     Row_list2  = [
             ["O", "O", "O", "O"], 
@@ -58,7 +58,7 @@ def admin():
 
     form = AdminLoginForm()
 
-    if request.method == "POST":
+    if request.method == "POST" and form.validate_on_submit():
         username = request.form["username"]
         password = request.form["password"]
 
@@ -73,15 +73,19 @@ def admin():
             pwds.append(list[1].replace("\n", ""))
 
         if username == admins[0] and password == pwds[0]:
-            return redirect(url_for('reservations')) # change to admin later
+            admin_logged_in = True
         elif username == admins[1] and password == pwds[1]:
-            return redirect(url_for('reservations')) # change to admin later
+            admin_logged_in = True
         elif username == admins[2] and password == pwds[2]:
-            return redirect(url_for('reservations')) # change to admin later
+            admin_logged_in = True
         else:
             error = "Wrong username or password, try again"
+
+        if request.method == "GET" and admin_logged_in:
+            return redirect(url_for('admin'))
+
             
-    return render_template("admin.html", form=form, template="form-template", error=error, Row_list2=Row_list2)
+    return render_template("admin.html", form=form, template="form-template", error=error, Row_list2=Row_list2, admin_logged_in=admin_logged_in)
 
 @app.route("/reservations", methods=['GET', 'POST'])
 def reservations():
@@ -113,10 +117,7 @@ def reservations():
 
     for z in row_seat_list:
             Row_list1[int(z[0])][int(z[1])] = "X"
-        
-    
-
-        
+ 
     form = ReservationForm()
     # getting data from the form once submit
     if request.method == "POST" and form.validate_on_submit():
@@ -128,7 +129,7 @@ def reservations():
 
         #check if the seat is already reserved
         if Row_list1[row_choice-1][seat_choice-1] == "X":
-            error = "Seat already reserved"
+            error = f"Error: Row: {row_choice} Seat: {seat_choice} already reserved"
             submitting_data = False
             return render_template("reservations.html", form=form, template="form-template", error=error,
             submitting_data=submitting_data, Row_list1=Row_list1, row_choice=row_choice, seat_choice=seat_choice, 
@@ -145,13 +146,10 @@ def reservations():
             with open("reservations.txt", "a") as file:
                 file.write(f"\n{first_name}, {row_choice-1}, {seat_choice-1}, {TicketNumber}")
             Row_list1[row_choice-1][seat_choice-1] = "X"
+            
             return render_template("reservations.html", form=form, template="form-template", Row_list1=Row_list1,
             submitting_data=submitting_data, row=row_choice, seat=seat_choice, 
-            fname=first_name, lname=last_name)
-    #return render_template("reservations.html", form=form, template="form-template", Row_list1=Row_list1)
-
-        return render_template("reservations.html", form=form, template="form-template", fname=first_name, lname=last_name, row=row_choice, seat=seat_choice, 
-        submitting_data=submitting_data, Row_list1=Row_list1)
+            fname=first_name, lname=last_name, TicketNumber=TicketNumber)
 
     return render_template("reservations.html", form=form, template="form-template",Row_list1=Row_list1)
 

@@ -7,17 +7,25 @@
 {% block content %}
 <div class="formwrapper">
   <h2 class="title">Administrator Login</h2>
-  <div>
-    <ul>
-      {% for seat in Row_list2 %}
-        <ul>{{"[ " + seat[0] + "  ||  " + seat[1] + "  ||  " + seat[2]+ "  ||  " + seat[3] + " ]"}}</ul>
-      {% endfor %}  
-    </ul>
-  </div>
+  <form action="GET" action="/admin">
+    {{ form.csrf_token }}
+    <div>
+    {% if admin_logged_in %}
+    <strong>Printing Seating Chart... </strong>
+    <br/>
+      <ul>
+        {% for seat in Row_list2 %}
+          <ul>{{"[ " + seat[0] + "  ||  " + seat[1] + "  ||  " + seat[2] + "  ||  " + seat[3] + " ]"}}</ul>
+        {% endfor %}  
+      </ul>
+    {% endif %}
+    </div>
+  </form>
+  
   <form method="POST" action="/admin">
       {{ form.csrf_token }}
       {% if error %}
-        <p>{{error}}</p>
+        <p style="color: red;">{{error}}</p>
       {% endif%}
       <div class="form-field">{{ form.username.label }} {{ form.username }}
         {% if form.username.errors %}
