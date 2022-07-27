@@ -3,7 +3,7 @@ from flask import current_app as app
 from flask import redirect, render_template, url_for, request, flash
 from .forms import *
 import numpy
-
+import random
 
 #@app.route("/", methods=['GET', 'POST'])
 @app.route("/", methods=['GET', 'POST'])
@@ -28,6 +28,33 @@ def user_options():
 def admin():
 
     error = None
+
+    Row_list2  = [
+            ["O", "O", "O", "O"], 
+            ["O", "O", "O", "O"], 
+            ["O", "O", "O", "O"], 
+            ["O", "O", "O", "O"], 
+            ["O", "O", "O", "O"], 
+            ["O", "O", "O", "O"], 
+            ["O", "O", "O", "O"], 
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"]]
+
+    #read reservations.txt file into list
+    with open("reservations.txt") as file:
+        lines = file.readlines()
+        file_read = []
+        row_seat_list = []
+        for line in lines:
+            list = line.split(", ")
+            file_read.append(list)
+            row_seat_list.append(list[1:3])
+
+    for z in row_seat_list:
+            Row_list2[int(z[0])][int(z[1])] = "X"
 
     form = AdminLoginForm()
 
@@ -54,13 +81,42 @@ def admin():
         else:
             error = "Wrong username or password, try again"
             
-    return render_template("admin.html", form=form, template="form-template", error=error)
+    return render_template("admin.html", form=form, template="form-template", error=error, Row_list2=Row_list2)
 
 @app.route("/reservations", methods=['GET', 'POST'])
 def reservations():
 
     submitting_data = False
+    Row_list1  = [
+            ["O", "O", "O", "O"], 
+            ["O", "O", "O", "O"], 
+            ["O", "O", "O", "O"], 
+            ["O", "O", "O", "O"], 
+            ["O", "O", "O", "O"], 
+            ["O", "O", "O", "O"], 
+            ["O", "O", "O", "O"], 
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"]]
 
+    #read reservations.txt file into list
+    with open("reservations.txt") as file:
+        lines = file.readlines()
+        file_read = []
+        row_seat_list = []
+        for line in lines:
+            list = line.split(", ")
+            file_read.append(list)
+            row_seat_list.append(list[1:3])
+
+    for z in row_seat_list:
+            Row_list1[int(z[0])][int(z[1])] = "X"
+        
+    
+
+        
     form = ReservationForm()
     # getting data from the form once submit
     if request.method == "POST" and form.validate_on_submit():
@@ -70,7 +126,33 @@ def reservations():
         seat_choice = int(request.form["seat"])
         submitting_data = True
 
-        return render_template("reservations.html", form=form, template="form-template", fname=first_name, lname=last_name, row=row_choice, seat=seat_choice, submitting_data=submitting_data)
+        #check if the seat is already reserved
+        if Row_list1[row_choice-1][seat_choice-1] == "X":
+            error = "Seat already reserved"
+            submitting_data = False
+            return render_template("reservations.html", form=form, template="form-template", error=error,
+            submitting_data=submitting_data, Row_list1=Row_list1, row_choice=row_choice, seat_choice=seat_choice, 
+            first_name=first_name, last_name=last_name)
+            
+        else:
+            #if the seat is not reserved, add the reservation to the file
+            combo = first_name + "INFOC"
+            mix = []
+            for letter in combo:
+                mix.append(letter)
+            random.shuffle(mix)
+            TicketNumber = "".join(mix) + "1040"
+            with open("reservations.txt", "a") as file:
+                file.write(f"\n{first_name}, {row_choice-1}, {seat_choice-1}, {TicketNumber}")
+            Row_list1[row_choice-1][seat_choice-1] = "X"
+            return render_template("reservations.html", form=form, template="form-template", Row_list1=Row_list1,
+            submitting_data=submitting_data, row=row_choice, seat=seat_choice, 
+            fname=first_name, lname=last_name)
+    #return render_template("reservations.html", form=form, template="form-template", Row_list1=Row_list1)
 
-    return render_template("reservations.html", form=form, template="form-template")
+        return render_template("reservations.html", form=form, template="form-template", fname=first_name, lname=last_name, row=row_choice, seat=seat_choice, 
+        submitting_data=submitting_data, Row_list1=Row_list1)
+
+    return render_template("reservations.html", form=form, template="form-template",Row_list1=Row_list1)
+
 
