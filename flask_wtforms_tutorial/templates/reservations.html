@@ -7,12 +7,21 @@
 {% block content %}
 <div class="formwrapper">
   <h2 class="title">Reserve Your Seat</h2>
+  <div>
+    <ul>
+      {% for seat in Row_list1 %}
+        <ul>{{"[ " + seat[0] + "  ||  " + seat[1] + "  ||  " + seat[2]+ "  ||  " + seat[3] + " ]"}}</ul>
+      {% endfor %}  
+    </ul>
+  </div>
+  
   {% if submitting_data %}
-  <h4>Thank you for submitting form data</h4>
-  <p>
-    {{ fname }} {{ lname }} chose Row: {{ row }} Seat: {{ seat }}.
-  </p>
+    <h4>Thank you for submitting form data</h4>
+    <p>
+      {{ fname }} {{ lname }} chose Row: {{ row }} Seat: {{ seat }}.
+    </p>
   {% endif %}
+  
   <form method="POST" action="/reservations">
       {{ form.csrf_token }}
       <div class="form-field">{{ form.first_name.label }} {{ form.first_name }}
