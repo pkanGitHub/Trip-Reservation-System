@@ -137,18 +137,24 @@ def reservations():
             
         else:
             #if the seat is not reserved, add the reservation to the file
+            namelist = []
+            infoList = ["I", "N", "F", "O", "T", "C"]
             name = first_name.upper()
-            combo = f"{name}NFOTEC"
-            mix = []
-            for letter in combo:
-                mix.append(letter)
-            
-            first = mix[0].upper()
-            mix.pop(0)
-            random.shuffle(mix)
-            mixed = "".join(mix)
-            TicketNumber = f"{first}I{mixed}4320"
-            TicketNumber = TicketNumber.replace(" ", "")
+            x = 0
+            if len(name) >= len(infoList):
+                for letter in name:
+                    namelist.append(letter)
+                    if x <= 5:
+                        namelist.append(infoList[x])
+                        x += 1
+                TicketNumber = f"{''.join(namelist)}4320"
+                TicketNumber = TicketNumber.replace(" ", "")
+            elif len(namelist) < len(infoList):
+                for letter in name:
+                    infoList.insert(x, letter)
+                    x += 2
+                TicketNumber = f"{''.join(infoList)}4320"
+                TicketNumber = TicketNumber.replace(" ", "")
 
             with open("reservations.txt", "a") as file:
                 file.write(f"\n{first_name}, {row_choice-1}, {seat_choice-1}, {TicketNumber}")
