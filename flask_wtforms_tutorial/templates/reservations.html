@@ -11,7 +11,7 @@
       <p style="color: red;">{{error}}</p>
     {% endif%}
     {% if submitting_data %}
-      <p>Congratulation {{ fname }}! Row:{{ row }} and Seat:{{ seat }} is now reserved. Have a nice trip!</p>
+      <p>Congratulation {{ fname.capitalize() }}! Row:{{ row }} and Seat:{{ seat }} is now reserved. Have a nice trip!</p>
       <p>Your e-ticket number is: {{TicketNumber}}</p>
       <br/>
     {% endif %}

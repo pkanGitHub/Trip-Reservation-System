@@ -55,7 +55,7 @@ def admin():
             row_seat_list.append(list[1:3])
 
     for z in row_seat_list:
-            Row_list2[int(z[0])][int(z[1])] = "X"
+        Row_list2[int(z[0])][int(z[1])] = "X"
 
     form = AdminLoginForm()
 
@@ -131,7 +131,7 @@ def reservations():
 
         #check if the seat is already reserved
         if Row_list1[row_choice-1][seat_choice-1] == "X":
-            error = f"Error: Row: {row_choice} Seat: {seat_choice} already reserved"
+            error = f"Error: Row: {row_choice} Seat: {seat_choice} already assigned. Choose again."
             submitting_data = False
             return render_template("reservations.html", form=form, template="form-template", error=error,
             submitting_data=submitting_data, Row_list1=Row_list1, row_choice=row_choice, seat_choice=seat_choice, 
@@ -141,7 +141,7 @@ def reservations():
             #if the seat is not reserved, add the reservation to the file
             namelist = []
             infoList = ["I", "N", "F", "O", "T", "C"]
-            name = first_name.upper()
+            name = first_name.capitalize()
             x = 0
             if len(name) >= len(infoList):
                 for letter in name:
