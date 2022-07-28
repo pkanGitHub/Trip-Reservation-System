@@ -4,6 +4,7 @@ from flask import redirect, render_template, url_for, request, flash
 from .forms import *
 import numpy
 import random
+import flask_wtforms_tutorial.total_sales as total_sales
 
 @app.route("/", methods=['GET', 'POST'])
 def user_options():
@@ -83,9 +84,10 @@ def admin():
 
         if request.method == "GET" and admin_logged_in:
             return redirect(url_for('admin'))
-
+        sales = TotalSales('reservations.txt')
+        total_sales = "Total Sales:" + str(sales.get_total_prices())
             
-    return render_template("admin.html", form=form, template="form-template", error=error, Row_list2=Row_list2, admin_logged_in=admin_logged_in)
+    return render_template("admin.html", form=form, template="form-template", error=error, Row_list2=Row_list2, admin_logged_in=admin_logged_in, total_sales = total_sales)
 
 @app.route("/reservations", methods=['GET', 'POST'])
 def reservations():
