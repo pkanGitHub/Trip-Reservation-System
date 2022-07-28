@@ -9,8 +9,9 @@ The seating chart and total sales will update with each user submission in the a
 
 ## Instructions to run the project:
 
-Navigate to the directory using Git command `cd` and locate `wsgi.py`.<br> 
-Run `python3 wsgi.py` once located.
+This project requires the installation of [Docker](https://docs.docker.com/get-docker/) to navigate the application.<br>
+Once Docker is open, locate the project directory using `cd` command in terminal.<br> 
+Type `docker-compose up` in terminal to run.
 
 ---
 
@@ -18,7 +19,8 @@ Run `python3 wsgi.py` once located.
 
 - **User Select** - Admin login or Reserve a seat<br>
      - **Admin login** - User will be prompted to enter correct Admin login information (username and password)
-       -  The admin user screen will print the current seating chart and current total ticket sales
+       - The admin user screen will print the current seating chart and current total ticket sales
+       - Admin credentials located in `password.txt`
      - **Reservations** - User will be prompted to enter First and Last name, seat row, and seat number
        - The typical user seeking to reserve a seat will also be presented with an updated seating chart and
 a form to enter reservation information.
