@@ -4,7 +4,7 @@ from flask import redirect, render_template, url_for, request, flash
 from .forms import *
 import numpy
 import random
-import flask_wtforms_tutorial.total_sales as total_sales
+from flask_wtforms_tutorial.total_sales import TotalSales
 
 @app.route("/", methods=['GET', 'POST'])
 def user_options():
@@ -29,7 +29,7 @@ def admin():
 
     error = None
     admin_logged_in = False
-
+    total_sales = ""
     Row_list2  = [
             ["O", "O", "O", "O"], 
             ["O", "O", "O", "O"], 
