@@ -6,6 +6,11 @@
 
 {% block content %}
 <div class="formwrapper">
+  <a href="{{url_for('user_options')}}">Home</a>
+  <span class="header-divider">|</span>
+  <a href="{{url_for('admin')}}">Admin</a>
+  <span class="header-divider">|</span>
+  <a href="{{url_for('reservations')}}">Reservations</a>
   <h2 class="title">Administrator Login</h2>
   
   <form method="POST" action="/admin">
